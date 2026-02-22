@@ -2560,6 +2560,19 @@ img, video, canvas, svg {
   .chat-box.open {
     transform: translateX(-50%) scale(1) !important;
   }
+}@media (max-width: 768px) {
+  .chat-box{
+    width: calc(100vw - 30px);
+    max-height: 70vh;
+    left: 50%;
+    right: auto;
+    bottom: 75px;
+    transform: translateX(-50%) scale(0);
+    transform-origin: bottom center;
+  }
+  .chat-box.open{
+    transform: translateX(-50%) scale(1);
+  }
 }
         }
     </style>
