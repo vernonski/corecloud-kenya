@@ -25,6 +25,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <style>
+        /* Performance Optimizations */
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img, video {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Critical CSS */
         :root {
             --primary-cyan: #b840b4;
             --primary-blue: #0066ff;
@@ -1330,6 +1346,9 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             flex: 0 0 380px;
             width: 380px;
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         .article-card:nth-child(2) {
@@ -2237,6 +2256,7 @@
                 right: 0;
                 padding: 2rem;
                 gap: 1.5rem;
+                z-index: 999;
             }
 
             .dark .nav-links.mobile-active {
@@ -2249,49 +2269,178 @@
                 border-bottom: 1px solid var(--light-border);
             }
 
+            /* Chat Widget Mobile - Centered */
             .chat-widget-container {
-                bottom: 20px;
-                right: 20px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .chat-toggle-button {
+                width: 55px;
+                height: 55px;
+                font-size: 1.6rem;
             }
 
             .chat-box {
-                width: calc(100vw - 40px);
-                max-height: 500px;
-                right: -10px;
+                width: calc(100vw - 30px);
+                max-height: 70vh;
+                right: 50%;
+                bottom: 75px;
+                transform: translateX(50%) scale(0);
+                transform-origin: bottom center;
             }
 
-            /* About page video responsive */
+            .chat-box.open {
+                transform: translateX(50%) scale(1);
+            }
+
+            .chat-messages {
+                max-height: 40vh;
+            }
+
+            /* Articles Carousel Mobile - Smooth Scrolling */
+            .articles-carousel {
+                padding: 1rem 0.5rem;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none;
+            }
+
+            .articles-carousel::-webkit-scrollbar {
+                display: none;
+            }
+
+            .article-card {
+                flex: 0 0 90vw;
+                width: 90vw;
+                max-width: 340px;
+                animation: none;
+                scroll-snap-align: center;
+                margin: 0 0.5rem;
+            }
+
+            .article-image-container {
+                height: 180px;
+            }
+
+            .scroll-indicator {
+                display: none !important;
+            }
+
+            .drag-tooltip {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
+
+            /* About Page - Justified Text */
             .about-layout {
                 grid-template-columns: 1fr;
-                gap: 3rem;
+                gap: 2.5rem;
+                padding: 0 1rem;
+            }
+
+            .about-text-content {
+                text-align: justify;
+                text-justify: inter-word;
+            }
+
+            .about-text-content p {
+                hyphens: auto;
+                -webkit-hyphens: auto;
+                line-height: 1.8;
             }
 
             .video-container {
                 order: -1;
-                max-width: 500px;
+                max-width: 100%;
                 margin: 0 auto;
+            }
+
+            /* Portfolio & Testimonials Mobile */
+            .portfolio-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            .portfolio-card,
+            .testimonial-card {
+                margin-bottom: 1rem;
+            }
+
+            /* Services Grid Mobile */
+            .services-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            /* Footer Mobile */
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .social-icons {
+                justify-content: center;
             }
         }
 
         @media (max-width: 480px) {
-            .chat-box {
-                width: calc(100vw - 20px);
-                bottom: 70px;
-                right: -50%;
-                transform-origin: bottom center;
-                left: 50%;
-                margin-left: calc(-50vw + 10px);
+            .hero-title {
+                font-size: 2rem;
             }
 
-            .chat-messages {
-                max-height: 300px;
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .chat-toggle-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.4rem;
+            }
+
+            .chat-box {
+                width: calc(100vw - 20px);
+                max-height: 65vh;
+            }
+
+            .article-card {
+                flex: 0 0 95vw;
+                width: 95vw;
+                max-width: 320px;
+            }
+
+            .article-image-container {
+                height: 160px;
             }
 
             .video-container {
                 max-width: 100%;
             }
-        }
-        /* =========================
+
+            .portfolio-image {
+                height: 200px;
+            }
+
+            /* Ensure no overflow */
+            html, body {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            img, video, canvas, svg {
+                max-width: 100%;
+                height: auto;
+            }
+            /* =========================
    MOBILE BALANCE PATCH
    (no content changes)
    ========================= */
@@ -2317,8 +2466,102 @@ img, video, canvas, svg {
   .hero, section {
     min-height: 100svh;
   }
-
 }
+
+/* 3) Mobile browsers + background-attachment: fixed = jank/zoom bugs
+      Disable fixed backgrounds on small screens (keeps same images/content) */
+@media (max-width: 1024px) {
+  .hero,
+  .light .hero,
+  #about, .light #about,
+  #services, .light #services,
+  #clients, .light #clients,
+  #contact, .light #contact,
+  .it-articles-section,
+  .light .it-articles-section {
+    background-attachment: scroll !important;
+    background-position: center top;
+  }
+}
+
+/* 4) Home hero typography scales smoothly across phone sizes */
+.hero-title {
+  font-size: clamp(2.2rem, 8.5vw, 4.5rem);
+  line-height: 1.1;
+  word-break: break-word;
+}
+.hero-subtitle {
+  font-size: clamp(1.05rem, 4.2vw, 1.5rem);
+}
+
+/* Reduce “too much top space” on phones caused by big margin-top */
+.hero-content {
+  margin-top: clamp(90px, 14vh, 150px);
+  margin-bottom: 40px;
+}
+
+/* 5) Nav spacing tighter on phones (prevents crowding/overflows) */
+@media (max-width: 768px) {
+  nav {
+    padding: 0.9rem 5%;
+  }
+  .logo {
+    font-size: 1.35rem;
+  }
+  .theme-toggle {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* 6) CTA buttons stack cleanly on small devices */
+@media (max-width: 480px) {
+  .cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.9rem;
+  }
+  .btn {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 0.95rem 1.4rem;
+  }
+}
+
+/* 7) Articles carousel feels “native” on mobile + prevents odd overflow */
+.articles-carousel {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+}
+.article-card {
+  scroll-snap-align: start;
+}
+
+/* On very small phones, let cards size relative to screen */
+@media (max-width: 480px) {
+  .article-card {
+    flex: 0 0 85vw;
+    width: 85vw;
+  }
+}
+
+/* 8) Fix chat box positioning on very small screens (your current rule can drift) */
+@media (max-width: 480px) {
+  .chat-box {
+    left: 50% !important;
+    right: auto !important;
+    bottom: 70px;
+    transform: translateX(-50%) scale(0) !important;
+    transform-origin: bottom center !important;
+    margin-left: 0 !important;
+  }
+  .chat-box.open {
+    transform: translateX(-50%) scale(1) !important;
+  }
+}
+        }
     </style>
 </head>
 <body class="dark">
@@ -2329,8 +2572,14 @@ img, video, canvas, svg {
 
         function App() {
             const [showSplash, setShowSplash] = useState(true);
-            const [theme, setTheme] = useState('dark');  // Changed from 'dark' to 'light'
-            const [currentPage, setCurrentPage] = useState('home');
+            const [theme, setTheme] = useState(() => {
+                // Load saved theme or default to 'dark'
+                return localStorage.getItem('theme') || 'dark';
+            });
+            const [currentPage, setCurrentPage] = useState(() => {
+                // Load saved page or default to 'home'
+                return localStorage.getItem('currentPage') || 'home';
+            });
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
             const [navHidden, setNavHidden] = useState(false);
             const [navScrolled, setNavScrolled] = useState(false);
@@ -2353,7 +2602,14 @@ img, video, canvas, svg {
 
             useEffect(() => {
                 document.body.className = theme;
+                // Save theme to localStorage
+                localStorage.setItem('theme', theme);
             }, [theme]);
+
+            // Save current page to localStorage
+            useEffect(() => {
+                localStorage.setItem('currentPage', currentPage);
+            }, [currentPage]);
 
             // Scroll detection for navigation
             useEffect(() => {
@@ -2819,9 +3075,9 @@ img, video, canvas, svg {
                     </div>
 
                     <div className="articles-content">
-                        <h2 className="section-title">Tech insights</h2>
+                        <h2 className="section-title">Tech Insights for the smart business person</h2>
                         <p className="section-subtitle">
-                            
+                            Stay informed with expert articles on technology trends and the best practices of 2026
                         </p>
 
                         <div className="articles-carousel-wrapper">
@@ -2927,8 +3183,8 @@ img, video, canvas, svg {
                                 preload="metadata"
                                 poster="images/video-poster.jpg"
                             >
-                                <source src="images/Video.mp4" type="video/mp4" />
-                                <source src="images/Video.mp4" type="video/mp4" />
+                                <source src="images/video.mp4" type="video/mp4" />
+                                <source src="images/about-video.webm" type="video/webm" />
                                 Your browser does not support the video tag.
                             </video>
                         </div>
