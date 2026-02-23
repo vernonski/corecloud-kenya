@@ -2385,6 +2385,52 @@
             .social-icons {
                 justify-content: center;
             }
+
+            /* =============================================
+               BULLETPROOF MOBILE FIXES FOR ARTICLES & CHAT
+               ============================================= */
+            
+            /* Force articles to stay in bounds */
+            .it-articles-section {
+                width: 100% !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+            }
+
+            .articles-carousel {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                gap: 15px !important;
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+
+            .articles-grid {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                gap: 15px !important;
+            }
+
+            .article-card {
+                flex-shrink: 0 !important;
+                width: 280px !important;
+                min-width: 280px !important;
+                max-width: 280px !important;
+            }
+
+            /* Force chat to center */
+            .chat-box {
+                position: fixed !important;
+                left: 15px !important;
+                right: 15px !important;
+                width: auto !important;
+                max-width: none !important;
+                transform: scale(0) !important;
+            }
+
+            .chat-box.open {
+                transform: scale(1) !important;
+            }
         }
 
         @media (max-width: 480px) {
@@ -2559,19 +2605,6 @@ img, video, canvas, svg {
   }
   .chat-box.open {
     transform: translateX(-50%) scale(1) !important;
-  }
-}@media (max-width: 768px) {
-  .chat-box{
-    width: calc(100vw - 30px);
-    max-height: 70vh;
-    left: 50%;
-    right: auto;
-    bottom: 75px;
-    transform: translateX(-50%) scale(0);
-    transform-origin: bottom center;
-  }
-  .chat-box.open{
-    transform: translateX(-50%) scale(1);
   }
 }
         }
@@ -3196,8 +3229,8 @@ img, video, canvas, svg {
                                 preload="metadata"
                                 poster="images/video-poster.jpg"
                             >
-                                <source src="images/Video.mp4" type="video/mp4" />
-                                <source src="images/Video.mp4" type="video/webm" />
+                                <source src="images/video.mp4" type="video/mp4" />
+                                <source src="images/about-video.webm" type="video/webm" />
                                 Your browser does not support the video tag.
                             </video>
                         </div>
